@@ -9,18 +9,18 @@ export interface IRequestSchemas {
 
 export class validateRequest {
     static execute(schema: IRequestSchemas){
-        return async (req: Request, res: Response, next: NextFunction) => {
+        return  (req: Request, res: Response, next: NextFunction) => {
         
             if(schema.params){
-                req.params = await schema.params?.parseAsync(req.params);
+                req.params =  schema.params?.parse(req.params);
             }
             
             if(schema.body){
-                req.body = await schema.body.parseAsync(req.body);
+                req.body =   schema.body.parse(req.body);
             }
             
             if(schema.query){
-                req.query = await schema.query.parseAsync(req.query);
+                req.query = schema.query.parse(req.query);
             }
             
             next();

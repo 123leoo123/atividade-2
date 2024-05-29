@@ -1,40 +1,41 @@
-import { booksDataBase } from "../database/database";
+import { booksDatabase } from "../database/database";
 import { Ibooks } from "../interface/booksInterface";
 
 export class booksServices {
+    createBook(data: Omit<Ibooks, "id" | "createdAt" | "updatedAt">) {
+        const newBook = { id: booksDatabase.length + 1, ...data , createdAt: new Date(), updatedAt: new Date()}
+
+        booksDatabase.push(newBook)
+
+        return newBook;
+    }
+
     getBooks() {
-        return booksDataBase;
+        return booksDatabase;
     }
 
     getOneBook(id: string) {
-        const findBook = booksDataBase.find(book => book.id === Number(id))
+        const findBook = booksDatabase.find(book => book.id === Number(id))
 
         return findBook;
     }
 
-    createBook(data: Omit<Ibooks, "id">) {
-        const newBook = { id: booksDataBase.length + 1, ...data }
+    editBook(id: string, data: Partial<Omit<Ibooks, "id">>) {
 
-        booksDataBase.push(newBook)
+        const book = booksDatabase.find(book => book.id === Number(id)) as Ibooks;
+
+        const newBook = { ...book, ...data };
+
+        const index = booksDatabase.findIndex(book => book.id === Number(id));
+
+        booksDatabase.splice(index, 1, newBook);
 
         return newBook;
     }
 
     deleteBook(id: string) {
-        const index = booksDataBase.findIndex(book => book.id === Number(id))
+        const index = booksDatabase.findIndex(book => book.id === Number(id))
 
-        booksDataBase.splice(index, 1)
-    }
-
-    editBook(id: string, data: Partial<Omit<Ibooks, "id">>) {
-        const book = booksDataBase.find(book => book.id === Number(id)) as Ibooks;
-
-        const newBook = { ...book, ...data };
-
-        const index = booksDataBase.findIndex(book => book.id === Number(id));
-
-        booksDataBase.splice(index, 1, newBook);
-
-        return newBook;
-    }
+        booksDatabase.splice(index, 1)
+    }  
 }

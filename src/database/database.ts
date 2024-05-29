@@ -1,8 +1,8 @@
 import { Ibooks } from "../interface/booksInterface"
 
-export const booksDataBase: Ibooks[] = [];
+export const booksDatabase: Ibooks[] = [];
 
-let id = 0;
+let id = 1;
 
 export const generateId = () => {
     id++

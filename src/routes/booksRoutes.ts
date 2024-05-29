@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isBookIdValid } from "../middlewares/isBooksValid.middlewares";
+import { isBookIdEqual, isBookIdValid } from "../middlewares/isBooksValid.middlewares";
 import { validateRequest } from "../middlewares/validateRequest.middleware";
 import { createBookBodySchema, editBookBodySchema } from "../schemas/createBookBody.schemas";
 import { booksControllers } from "../controllers/booksControllers";
@@ -12,8 +12,8 @@ booksRoutes.get("/", BooksControllers.getBooks);
 
 booksRoutes.get("/:id", isBookIdValid.execute, BooksControllers.getBooks);
 
-booksRoutes.post("/", validateRequest.execute({ body: createBookBodySchema}), BooksControllers.createBook);
+booksRoutes.post("/", validateRequest.execute({ body: createBookBodySchema}), isBookIdEqual.execute, BooksControllers.createBook);
 
 booksRoutes.delete("/:id", isBookIdValid.execute, BooksControllers.deleteBook);
 
-booksRoutes.patch("/:id", isBookIdValid.execute, validateRequest.execute({body: editBookBodySchema}), BooksControllers.editBook);
+booksRoutes.patch("/:id", isBookIdValid.execute, validateRequest.execute({body: editBookBodySchema}), isBookIdEqual.execute, BooksControllers.editBook);

@@ -2,11 +2,21 @@ import { Request, Response } from "express";
 import { booksServices } from "../services/booksServices";
 
 export class booksControllers {
+    
+    createBook(req: Request, res: Response): Response {
+
+        const BooksServices = new booksServices();
+
+        const response = BooksServices.createBook(req.body);
+
+        return res.status(201).json(response);
+    }
+    
     getBooks(req: Request, res: Response): Response {
 
         const BooksServices = new booksServices();
 
-        const response = booksServices.getBooks();
+        const response = BooksServices.getBooks();
 
         return res.status(200).json(response)
     }
@@ -15,34 +25,25 @@ export class booksControllers {
 
         const BooksServices = new booksServices();
 
-        const response = booksServices.getOneBook(req.params.id);
+        const response = BooksServices.getOneBook(req.params.id);
 
         return res.status(200).json(response)
-    }
-
-    createBook(req: Request, res: Response): Response {
-
-        const BooksServices = new booksServices();
-
-        const response = booksServices.createBook(req.body);
-
-        return res.status(201).json(response);
-    }
-
-    deleteBook(req: Request, res: Response): Response {
-
-        const BooksServices = new booksServices();
-
-        BooksServices.deleteBook(req.params.id);
-
-        return res.status(204).json();
     }
 
     editBook(req: Request, res: Response): Response {
         const BooksService = new booksServices();
 
-        const response = booksServices.editBook(req.params.id, req.body);
+        const response = BooksService.editBook(req.params.id, req.body);
 
         return res.status(200).json(response);
+    }
+
+    deleteBook(req: Request, res: Response) {
+// não deveria ter um :Response no final da linha acima?
+        const BooksServices = new booksServices();
+
+        BooksServices.deleteBook(req.params.id);
+
+        return res.status(204).json();
     }
 }
